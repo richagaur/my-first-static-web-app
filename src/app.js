@@ -1,4 +1,4 @@
-const newsEndpoint = "https://news-app.azurewebsites.net/api/query";
+const newsEndpoint = "https://news-chat-app.azurewebsites.net/api/query";
 
 document.addEventListener("DOMContentLoaded", function () {
     const chatHistory = [];
