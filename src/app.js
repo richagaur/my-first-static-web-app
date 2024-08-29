@@ -1,4 +1,4 @@
-const newsEndpoint = "https://news-chat-app.azurewebsites.net/api/query";
+const newsEndpoint = "http://localhost:7071/api/query";
 
 document.addEventListener("DOMContentLoaded", function () {
     const chatHistory = [];
@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const clearButton = document.getElementById('clear-button');
 
     async function fetchChatResponse(userMessage) {
-        const startTime = performance.now();
+        updateChatHistoryDisplay(userMessage, chatHistoryContainer, userInput, true);
+
         // Prepare the request payload
         requestData = { "message": userMessage, "chatHistory": chatHistory };
         console.log("Request Data:", JSON.stringify(requestData));
@@ -23,19 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const responsePayload = await response.json();
             console.log("Response Data:", responsePayload);
-            const endTime = performance.now();
-            const elapsedTime = Math.round((endTime - startTime)) + "ms";
-
             // Check if the response is cached
             const cached = responsePayload.cached;
-            let details = `\n (Time: ${elapsedTime})`;
-            if (cached) {
-                details += " (Cached)";
-            }
 
             // Append user message and response to chat history
-            chatHistory.push([userMessage, responsePayload.response + details]);
-
+            chatHistory.push([userMessage, responsePayload.response]);
+            updateChatHistoryDisplay(responsePayload.response, chatHistoryContainer, userInput, false);
             // Update the chatbot display with the new chat history
             updateChatHistory(chatHistory);
         } catch (error) {
@@ -47,42 +41,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    function updateChatHistory() {
-        chatHistoryContainer.innerHTML = '';
-        chatHistory.forEach(([userMessage, response]) => {
-            const userMessageElement = document.createElement('div');
-            userMessageElement.className = 'message user-message';
-            userMessageElement.textContent = userMessage;
-
-            const botResponseElement = document.createElement('div');
-            botResponseElement.className = 'message bot-response';
-            botResponseElement.textContent = response;
-
-            chatHistoryContainer.appendChild(userMessageElement);
-            chatHistoryContainer.appendChild(botResponseElement);
-        });
-        chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
-    }
-
     sendButton.addEventListener('click', async () => {
         const userMessage = userInput.value;
         if (!userMessage) return;
-
-        await fetchChatResponse(userMessage);
-        updateChatHistory();
         userInput.value = '';
-    });
-
-    clearButton.addEventListener('click', () => {
-        chatHistory.length = 0;
-        updateChatHistory();
+        await fetchChatResponse(userMessage);
     });
 
     // Handle 'Enter' key press for submitting
-    userInput.addEventListener('keypress', (event) => {
+    userInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            sendButton.click();
+            if (event.shiftKey) {
+                // Allow new line when Shift + Enter is pressed
+                return;
+              } else {
+                // Prevent default form submission behavior
+                event.preventDefault();
+                sendButton.click();
+                console.log("Enter key pressed");
+              }
         }
+
     });
+
 });
+
+
+function updateChatHistoryDisplay(message, chatHistoryContainer, userInput, userMessage) {
+    const messageElement = document.createElement('div');
+    if(userMessage){
+        messageElement.className = 'message-user-message';
+    }else{
+        messageElement.className = 'message-bot-response';
+    }
+    messageElement.textContent = message;
+    chatHistoryContainer.appendChild(messageElement);
+
+    if(userMessage){
+        userInput.setAttribute("disabled", true);
+    }else{
+        userInput.removeAttribute("disabled");
+        userInput.focus();
+    }
+    chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
+}
 
