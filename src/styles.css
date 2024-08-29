@@ -1,27 +1,27 @@
 body {
+    display: flex;
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
+    background-color: lightgray;
+
 }
 
 nav {
-    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     background-color: #333;
     padding: 10px;
     text-align: left;
+    flex-direction: row;
 }
 
 nav h2 {
     color: white;
     text-decoration: solid;
     margin: 0 10px;
-    justify-content: flex-start;
 }
 
 #clear-button {
@@ -52,40 +52,38 @@ p {
     color: #666;
 }
 
-main {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
 #input-container {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    width: 50%;
+    display: flex;
+    flex-direction: row;
 }
 
 #user-input {
-    flex: 1;
     padding: 10px;
     font-size: 16px;
+    width: 70%;
+    height: 70px;
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px;
 }
 
 #send-button {
+    margin: 5px;
     padding: 10px 20px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-left: none;
-    background-color: #4CAF50;
-    color: white;
+    color: black;
     cursor: pointer;
-    border-radius: 0 5px 5px 0;
+    border-radius: 100px;
 }
 
 #chat-history {
-    height: 300px;
+    display: flex;
+    flex-direction: column;
+    width: 99%;
+    height: 95%;
     overflow-y: scroll;
     border: 1px solid #ccc;
     padding: 10px;
@@ -94,9 +92,34 @@ main {
 }
 
 #chat-container {
-    width: 400px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
+    display: flex;
+    background-color: #f9f9f9;
+    width: 98%;
+    height: 87vh;
+    flex-direction: column;
+    justify-content: center;
+    /* margin: 0 auto; */
+    /* border: 1px solid black; */
     padding: 10px;
+    /* border-radius: 5px; */
+}
+
+.message-user-message{
+    background-color: #cccccc;
+    color: black;
+    padding: 10px;
+    align-self: flex-start;
     border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.message-bot-response{
+    background-color: #99ccff;
+    color: black;
+    padding: 10px;
+    align-self: flex-end;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
 }
