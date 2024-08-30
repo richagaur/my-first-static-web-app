@@ -123,6 +123,16 @@ p {
     margin-bottom: 10px;
 }
 
+.typing-bot-response{
+    color: black;
+    padding: 10px;
+    align-self: flex-end;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 60px;
+    height: 50px;
+}
+
 h3 {
     color: #1a1a1a;
 }

@@ -6,9 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
     const clearButton = document.getElementById('clear-button');
-
+    const typing = document.createElement('img');
+    typing.className = 'typing-bot-response';
+    typing.src = "images/typing.gif"
+    
     async function fetchChatResponse(userMessage) {
-        updateChatHistoryDisplay(userMessage, chatHistoryContainer, userInput, true);
+        updateChatHistoryDisplay(userMessage, chatHistoryContainer, userInput, true, typing);
 
         // Prepare the request payload
         requestData = { "message": userMessage, "chatHistory": chatHistory };
@@ -29,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Append user message and response to chat history
             chatHistory.push([userMessage, responsePayload.response]);
-            updateChatHistoryDisplay(responsePayload.response, chatHistoryContainer, userInput, false);
+            updateChatHistoryDisplay(responsePayload.response, chatHistoryContainer, userInput, false, typing);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -64,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function updateChatHistoryDisplay(message, chatHistoryContainer, userInput, userMessage) {
+function updateChatHistoryDisplay(message, chatHistoryContainer, userInput, userMessage, typing) {
     const messageElement = document.createElement('div');
     if(userMessage){
         messageElement.className = 'message-user-message';
@@ -78,9 +81,11 @@ function updateChatHistoryDisplay(message, chatHistoryContainer, userInput, user
     chatHistoryContainer.appendChild(messageElement);
 
     if(userMessage){
+        chatHistoryContainer.appendChild(typing);
         userInput.setAttribute("disabled", true);
     }else{
         userInput.removeAttribute("disabled");
+        chatHistoryContainer.removeChild(typing);
         userInput.focus();
     }
     chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
