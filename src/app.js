@@ -30,8 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // Append user message and response to chat history
             chatHistory.push([userMessage, responsePayload.response]);
             updateChatHistoryDisplay(responsePayload.response, chatHistoryContainer, userInput, false);
-            // Update the chatbot display with the new chat history
-            updateChatHistory(chatHistory);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -40,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("user-input").value = "";
 
     }
-
     sendButton.addEventListener('click', async () => {
         const userMessage = userInput.value;
         if (!userMessage) return;
@@ -71,10 +68,13 @@ function updateChatHistoryDisplay(message, chatHistoryContainer, userInput, user
     const messageElement = document.createElement('div');
     if(userMessage){
         messageElement.className = 'message-user-message';
+        messageElement.textContent = message;
     }else{
         messageElement.className = 'message-bot-response';
+        //const formattedNewsContent = formatNewsString(message);
+        messageElement.innerHTML = message;
     }
-    messageElement.textContent = message;
+    
     chatHistoryContainer.appendChild(messageElement);
 
     if(userMessage){

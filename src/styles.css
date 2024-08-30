@@ -121,5 +121,22 @@ p {
     align-self: flex-end;
     border-radius: 5px;
     margin-bottom: 10px;
+}
 
+h3 {
+    color: #1a1a1a;
+}
+ol {
+    padding-left: 20px;
+}
+li {
+    margin-bottom: 10px;
+}
+strong {
+    font-size: 1.1em;
+    color: #333;
+}
+p {
+    margin-top: 5px;
+    color: black;
 }
